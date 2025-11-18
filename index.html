@@ -1,0 +1,123 @@
+<!DOCTYPE html> <!-- Indica que el documento está escrito en HTML5 -->
+<html lang="es"> <!-- Establece el idioma del contenido como español -->
+<head>
+  <meta charset="UTF-8"> <!-- Define la codificación de caracteres a UTF-8 (para mostrar tildes, ñ, etc.) -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Hace que la página se adapte a pantallas de celular y PC -->
+  <title>Sistema de Asistencias</title> <!-- Título que aparece en la pestaña del navegador -->
+  
+  <!-- Enlace a Bulma (framework CSS que facilita el diseño con clases predefinidas) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+
+  <!-- Enlace a Font Awesome (biblioteca de íconos) -->
+  <script src="https://kit.fontawesome.com/a2d9d5b9d4.js" crossorigin="anonymous"></script>
+  
+  <!-- Estilos personalizados que se aplican además de Bulma -->
+  <style>
+    body {
+      background: linear-gradient(135deg, #249440, #522d75); /* Crea un fondo con degradado de verde a violeta */
+      min-height: 100vh; /* Ocupa toda la altura visible de la ventana */
+      display: flex; /* Activa el modelo Flexbox */
+      flex-direction: column; /* Coloca los elementos uno debajo del otro */
+      justify-content: center; /* Centra verticalmente los elementos */
+    }
+
+    .login-box {
+      background-color: rgb(255, 255, 255); /* Fondo blanco para la caja de login */
+      border-radius: 12px; /* Bordes redondeados */
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Sombra suave alrededor */
+      padding: 2.5rem; /* Espaciado interno */
+      transition: transform 0.2s ease, box-shadow 0.2s ease; /* Efecto animado al pasar el mouse */
+    }
+
+    .login-box:hover {
+      transform: translateY(-3px); /* Mueve la caja ligeramente hacia arriba al hacer hover */
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25); /* Aumenta la sombra al hacer hover */
+    }
+
+    .title {
+      color: #fff; /* Título en color blanco */
+      text-shadow: 0 1px 2px rgba(0,0,0,0.25); /* Sombra ligera en el texto para resaltar */
+    }
+
+    #mensaje {
+      font-weight: 600; /* Texto del mensaje en negrita (se usa para mostrar errores o alertas) */
+    }
+
+    .footer-text {
+      color: #f0f0f0; /* Color gris claro del pie de página */
+      font-size: 0.9rem; /* Tamaño de texto más pequeño */
+      margin-top: 2rem; /* Espaciado arriba del pie */
+      text-align: center; /* Centra el texto */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Sección principal del contenido -->
+  <section class="section">
+    <div class="container has-text-centered"> <!-- Contenedor centrado gracias a Bulma -->
+      
+      <!-- Título principal -->
+      <h1 class="title is-2 mb-6">
+        <span class="icon-text"> <!-- Agrupa texto e ícono en una misma línea -->
+          <span class="icon has-text-light">
+            <i class="fas fa-school fa-lg"></i> <!-- Ícono de escuela -->
+          </span>
+          <span>Colegio Santa María</span> <!-- Texto al lado del ícono -->
+        </span>
+      </h1>
+
+      <!-- Caja del formulario de inicio de sesión -->
+      <div class="login-box" style="max-width:400px; margin:auto;"> <!-- Caja centrada y de ancho fijo -->
+        
+        <!-- Subtítulo -->
+        <h2 class="subtitle has-text-link has-text-weight-semibold mb-4">
+          <span class="icon-text">
+            <span class="icon"><i class="fas fa-user-lock"></i></span> <!-- Ícono de candado -->
+            <span>Inicio de Sesión</span>
+          </span>
+        </h2>
+
+        <!-- Campo de usuario -->
+        <div class="field"> <!-- Bloque de formulario de Bulma -->
+          <label class="label">Usuario</label> <!-- Etiqueta del campo -->
+          <div class="control has-icons-left"> <!-- Contenedor con ícono a la izquierda -->
+            <input id="usuario" class="input" type="text" placeholder="Ingrese su usuario"> <!-- Campo de texto -->
+            <span class="icon is-small is-left">
+              <i class="fas fa-user"></i> <!-- Ícono de usuario -->
+            </span>
+          </div>
+        </div>
+
+        <!-- Campo de contraseña -->
+        <div class="field">
+          <label class="label">Contraseña</label>
+          <div class="control has-icons-left">
+            <input id="contrasena" class="input" type="password" placeholder="Ingrese su contraseña"> <!-- Campo tipo contraseña -->
+            <span class="icon is-small is-left">
+              <i class="fas fa-lock"></i> <!-- Ícono de candado -->
+            </span>
+          </div>
+        </div>
+
+        <!-- Botón para ingresar -->
+        <div class="field mt-5">
+          <button id="btnLogin" class="button is-link is-fullwidth is-medium">
+            <span class="icon"><i class="fas fa-sign-in-alt"></i></span> <!-- Ícono de entrada -->
+            <span>Ingresar</span>
+          </button>
+        </div>
+
+        <!-- Texto donde se mostrará un mensaje de error o validación -->
+        <p id="mensaje" class="has-text-danger mt-3"></p>
+      </div>
+
+      <!-- Pie de página -->
+      <p class="footer-text">Sistema de Asistencias - Colegio Santa María © 2025</p>
+    </div>
+  </section>
+
+  <!-- Archivo JavaScript principal -->
+  <script src="js/main.js"></script> <!-- Aquí se conectará la lógica del login -->
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html> <!-- Indica que el documento usa HTML5 -->
+<html lang="es"> <!-- Lenguaje español -->
+<head>
+  <meta charset="UTF-8"> <!-- Codificación UTF-8 para caracteres especiales -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Diseño adaptable a móviles -->
+  <title>Panel de Administrador - Reportes de Asistencia</title> <!-- Título en la pestaña -->
+
+  <!-- Enlace a Bulma (framework CSS) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  
+  <!-- Librería de íconos FontAwesome -->
+  <script src="https://kit.fontawesome.com/a2d9d5b9d4.js" crossorigin="anonymous"></script>
+
+  <style>
+    /* === ESTILOS PERSONALIZADOS === */
+
+    /* Fondo claro violeta del sitio */
+    body {
+      background-color: #f3f0ff;
+      min-height: 100vh; /* Ocupa toda la altura visible */
+    }
+
+    /* Gradiente violeta para la barra superior y el encabezado */
+    .navbar, .hero {
+      background: linear-gradient(135deg, #6b21a8, #9333ea);
+    }
+
+    /* Texto blanco en la navbar y el encabezado hero */
+    .navbar .navbar-item,
+    .hero .title,
+    .hero .subtitle {
+      color: white !important;
+    }
+
+    /* Botón violeta personalizado */
+    .button-purple {
+      background-color: #7c3aed; /* Morado brillante */
+      color: white;
+      border: none;
+      transition: background 0.2s, transform 0.2s; /* Suaviza el cambio de color y movimiento */
+    }
+
+    /* Efecto hover del botón */
+    .button-purple:hover {
+      background-color: #5b21b6; /* Morado más oscuro */
+      transform: translateY(-2px); /* Le da un pequeño levantamiento */
+    }
+
+    /* Mensaje informativo con fondo violeta claro */
+    .notification-custom {
+      background-color: #ede9fe;
+      color: #4c1d95;
+      font-weight: 600;
+    }
+
+    /* Fondo violeta claro para la tabla */
+    table tbody {
+      background-color: #ede9fe;
+    }
+
+    /* Filas pares con tono más oscuro */
+    table tbody tr:nth-child(even) {
+      background-color: #e0d4f7;
+    }
+
+    /* Colores del check según el estado */
+    .check-verde { color: #15803d; font-weight: bold; }   /* Presente */
+    .check-amarillo { color: #facc15; font-weight: bold; } /* Tarde */
+    .check-rojo { color: #ef4444; font-weight: bold; }     /* Ausente */
+  </style>
+</head>
+
+<body>
+  <!-- ====== NAVBAR ====== -->
+  <nav class="navbar"> <!-- Barra superior -->
+    <div class="navbar-brand">
+      <a class="navbar-item has-text-weight-semibold" href="#">
+        <span class="icon"><i class="fas fa-chalkboard-teacher"></i></span> <!-- Ícono de pizarra -->
+        <span>Panel de Administrador</span>
+      </a>
+    </div>
+
+    <!-- Botón para cerrar sesión -->
+    <div class="navbar-end">
+      <div class="navbar-item">
+        <button class="button is-light" onclick="window.location.href='index.html'">
+          <span class="icon"><i class="fas fa-sign-out-alt"></i></span>
+          <span>Cerrar sesión</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ====== HERO HEADER ====== -->
+  <section class="hero is-small"> <!-- Encabezado con fondo violeta degradado -->
+    <div class="hero-body has-text-centered">
+      <p class="title is-3">📋 Reportes de Asistencia</p>
+      <p class="subtitle is-5">Consulta los registros diarios de cada curso</p>
+    </div>
+  </section>
+
+  <!-- ====== CONTENIDO PRINCIPAL ====== -->
+  <section class="section">
+    <div class="container">
+      <div class="columns is-centered">
+        <div class="column is-10">
+          <div class="card">
+            <!-- Encabezado de la tarjeta -->
+            <header class="card-header" style="background-color:#7c3aed;">
+              <p class="card-header-title has-text-white">
+                <span class="icon mr-2"><i class="fas fa-calendar-alt"></i></span>
+                Filtro por fecha
+              </p>
+            </header>
+
+            <!-- Contenido principal -->
+            <div class="card-content">
+              <!-- Selector de fecha + botón "Ver Asistencias" -->
+              <div class="columns is-vcentered is-centered mb-4">
+                <div class="column is-narrow">
+                  <div class="field has-addons"> <!-- Agrupa el input y el botón -->
+                    <div class="control">
+                      <input id="fechaReporte" class="input is-rounded" type="date" style="border-color:#7c3aed;">
+                    </div>
+                    <div class="control">
+                      <button id="btnVer" class="button button-purple is-rounded">
+                        <span class="icon"><i class="fas fa-search"></i></span>
+                        <span>Ver Asistencias</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Mensaje informativo (por defecto oculto) -->
+              <div id="mensaje" class="notification notification-custom is-hidden has-text-centered">
+                <strong>Seleccione una fecha</strong> para ver los registros.
+              </div>
+
+              <!-- Tabla donde se mostrarán los registros -->
+              <div class="table-container mt-5">
+                <table class="table is-striped is-hoverable is-fullwidth" id="tablaReporte">
+                  <thead>
+                    <tr style="background-color:#7c3aed; color:white;">
+                      <th>Alumno</th>
+                      <th class="has-text-centered">Presente</th>
+                      <th class="has-text-centered">Tarde</th>
+                      <th class="has-text-centered">Ausente</th>
+                    </tr>
+                  </thead>
+                  <tbody class="has-text-centered"></tbody> <!-- Aquí se insertan filas dinámicamente -->
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pie de página -->
+          <div class="has-text-centered mt-5">
+            <p class="is-size-7 has-text-grey">
+              Sistema de Asistencias - Colegio Santa María © 2025
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SCRIPT PRINCIPAL ====== -->
+  <script>
+    // Referencias a los elementos HTML
+    const btnVer = document.getElementById("btnVer"); // Botón “Ver Asistencias”
+    const tabla = document.querySelector("#tablaReporte tbody"); // Cuerpo de la tabla
+    const mensaje = document.getElementById("mensaje"); // Mensaje informativo
+
+    // --- Evento que se ejecuta al presionar el botón ---
+    btnVer.addEventListener("click", () => {
+      const fecha = document.getElementById("fechaReporte").value; // Obtiene la fecha seleccionada
+      tabla.innerHTML = "";  // Limpia la tabla
+      mensaje.classList.add("is-hidden"); // Oculta el mensaje por si estaba visible
+
+      // Si no se seleccionó fecha, muestra advertencia
+      if (!fecha) {
+        mensaje.classList.remove("is-hidden");
+        mensaje.classList.add("is-warning");
+        mensaje.textContent = "⚠️ Debe seleccionar una fecha.";
+        return; // Sale de la función
+      }
+
+      // Recupera los datos guardados en localStorage por el preceptor
+      const asistencias = JSON.parse(localStorage.getItem("asistencias")) || {};
+      const registros = asistencias[fecha] || []; // Busca los registros de esa fecha
+
+      // Si no hay registros, muestra mensaje informativo
+      if (registros.length === 0) {
+        mensaje.classList.remove("is-hidden");
+        mensaje.classList.add("is-info");
+        mensaje.textContent = "No hay asistencias registradas para esta fecha.";
+        return;
+      }
+
+      // Si hay registros, los recorre y muestra en la tabla
+      registros.forEach(r => {
+        const fila = document.createElement("tr"); // Crea una fila
+        fila.innerHTML = `
+          <td>${r.nombre}</td> <!-- Nombre del alumno -->
+          <!-- Muestra un check según el estado -->
+          <td>${r.estado === "Presente" ? '<span class="check-verde">✔️</span>' : ''}</td>
+          <td>${r.estado === "Tarde" ? '<span class="check-amarillo">✔️</span>' : ''}</td>
+          <td>${r.estado === "Ausente" ? '<span class="check-rojo">✔️</span>' : ''}</td>
+        `;
+        tabla.appendChild(fila); // Agrega la fila a la tabla
+      });
+    });
+  </script>
+</body>
+</html>
